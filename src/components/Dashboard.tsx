@@ -4,11 +4,15 @@ import { signOut, useSession } from 'next-auth/react'
 
 import Loading from '@/components/Loading'
 import TextOptions from '@/components/TextOptions'
+import { useTextOptionStore } from '@/data/TextOptionStore'
+
 
 export default function Dashboard() {
 
     const router = useRouter()
     const session = useSession()
+
+    const { sentTexts } = useTextOptionStore()
 
     useEffect(() => {
         if(session.status === 'unauthenticated') router.push('/')
@@ -17,27 +21,27 @@ export default function Dashboard() {
     if(session.status === 'loading') return <Loading />
 
     return (
-        <div className='h-screen flex flex-col bg-base-200'>
-            <div className='navbar bg-base-300'>
-                <div className='flex-1 px-10 flex-nowrap whitespace-nowrap overflow-hidden overflow-ellipsis'>
-                    <h1 className='normal-case text-2xl text-primary'>Edge Automated Texting</h1>
-                </div>
-                <div className='flex-none'>
-                    <button onClick={() => signOut()} className='btn btn-ghost text-primary'>Log Out</button>
-                </div>
-            </div>
+        <div className='h-full lg:h-screen flex flex-col bg-base-200'>
             <div className='flex flex-col lg:h-full lg:grid lg:grid-cols-3 lg:grid-rows-3 p-6 gap-6'>
                 <div className='flex h-full w-full lg:col-span-2 shadow-lg'>
-                    <textarea className='h-full w-full textarea textarea-lg textarea-bordered' placeholder='Enter message here.' style={{ "resize": "none" }} />
+                    <textarea className='h-full w-full textarea textarea-lg textarea-bordered' maxLength={250} placeholder='Enter message here.' style={{ "resize": "none" }} />
                 </div>
-                <div className='flex flex-col h-full w-full lg:row-span-3 bg-base-100 rounded-lg shadow-xl p-4'>
-                    <h1 className='w-full text-primary text-center text-2xl'>Options</h1>
+                <div className='flex flex-col gap-2 h-full w-full lg:row-span-3 bg-base-100 rounded-lg shadow-xl p-4'>
+                    <div className='flex w-full justify-between items-center px-2'>
+                        <h1 className='text-4xl text-primary'>Options</h1>
+                        <h1 onClick={() => signOut()} className='btn btn-sm text-primary'>Logout</h1>
+                    </div>
                     <TextOptions />
                 </div>
-                <div className='flex flex-col h-full w-full lg:row-span-2 col-span-2 bg-base-100 rounded-lg shadow-xl p-4' tabIndex={0}>
-                    <h1 className='w-full text-primary text-center text-2xl'>Texts Sent</h1>
-                    <div className='flex h-full lg:grid lg:grid-cols-2 xl:grid-cols-3'>
-                        
+                <div className='flex flex-col h-full w-full lg:row-span-2 col-span-2 bg-base-100 rounded-lg shadow-xl p-4 overflow-hidden'>
+                    <div className='flex flex-col h-full gap-2 gap-x-4 lg:grid lg:grid-cols-2 xl:grid-cols-3 overflow-y-auto pr-4'>
+                        {/*<div className='border min-h-16 h-16 border-base-200 flex justify-start p-4 items-center rounded-xl'><h1>Seth Torrence</h1></div>*/}
+                        {(sentTexts.length === 0) && <div className='h-16'>Texts sent will display here!</div>}
+                        {sentTexts.map((name, idx) => (
+                            <div key={idx} className='border min-h-16 h-16 border-base-200 flex justify-start p-4 items-center rounded-xl'>
+                                <h1>{name}</h1>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

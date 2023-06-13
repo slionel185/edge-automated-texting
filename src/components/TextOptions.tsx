@@ -1,10 +1,17 @@
 import { useState } from 'react'
 
+import { presets } from '@/helpers/presets'
 import { useTextOptionStore } from '@/data/TextOptionStore'
 
 export default function TextOptions() {
 
-    const { bucket, setBucket, sortBy, setSortBy, textToSend, setTextToSend, lastContactedDate, setLastContactedDate } = useTextOptionStore()
+    const { bucket, setBucket, sortBy, setSortBy, textToSend, setTextToSend, lastContactedDate, setLastContactedDate, amountSent, sentTexts } = useTextOptionStore()
+
+    const [sending, setSending] = useState(false)
+
+    const dispatch = () => {
+
+    }
 
     return (
         <div className='flex flex-col h-full justify-center items-center gap-4'>
@@ -72,12 +79,29 @@ export default function TextOptions() {
                 </div>
             </div>
 
-            <div className='join join-vertical lg:join-horizontal'>
-                <button className='btn join-item'>RFC</button>
-                <button className='btn join-item'>Web Lead</button>
-                <button className='btn join-item'>Missed Guest</button>
-                <button className='btn join-item'>Appt No Show</button>
-                <button className='btn join-item'>Guest of Total</button>
+            <div className='w-full flex flex-col gap-2'>
+                <div className='w-full flex justify-center gap-2 items-center'>
+                    <button onClick={presets.rfc} className='btn btn-sm xl:btn-md'>RFC</button>
+                    <button onClick={presets.missedGuest} className='btn btn-sm xl:btn-md'>Missed Guest</button>
+                    <button onClick={presets.guestOfTotal} className='btn btn-sm xl:btn-md'>Guest of Total</button>
+                </div>
+                <div className='w-full flex justify-center gap-2 items-center'>
+                    <button onClick={presets.webLead} className='btn btn-sm xl:btn-md'>Web Lead</button>
+                    <button onClick={presets.apptNoShow} className='btn btn-sm xl:btn-md'>Appt No Show</button>
+                    <button onClick={presets.paidPass} className='btn btn-sm xl:btn-md'>Paid Pass</button>
+                </div>
+            </div>
+
+            <div className='join'>
+                <div onClick={() => setSending(!sending)} className={sending ? 'join-item btn btn-disabled btn-md' : 'join-item btn btn-success btn-md'}>
+                    <h1>{!sending? 'Send' : 'Sending'}</h1>
+                </div>
+                <div className='join-item btn btn-neutral btn-disabled btn-md'>
+                    <h1>Sent: {amountSent}</h1>
+                </div>
+                <div onClick={() => setSending(!sending)} className={!sending ? 'join-item btn btn-disabled btn-md' : 'join-item btn btn-primary btn-md'}>
+                    <h1>Stop</h1>
+                </div>
             </div>
         </div>
     )
