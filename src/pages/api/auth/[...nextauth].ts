@@ -32,6 +32,20 @@ export const authOptions: NextAuthOptions = {
             }
         })
     ],
+    callbacks: {
+        async session({ session, token }) {
+            return {
+                ...session,
+                token,
+            }
+        },
+        async jwt({ token, user }) {
+            if (user) {
+                token.user = user
+            }
+            return token
+        },
+    },
     session: {
         strategy: 'jwt',
     },

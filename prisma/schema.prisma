@@ -53,7 +53,7 @@ model Bot {
   bucket String
   sortBy String
   textToSend Int
-  lastContactedDate String
+  lastContactedDate Int
   message String
   sentTexts String[]
   amountSent Int

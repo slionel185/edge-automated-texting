@@ -8,7 +8,8 @@ interface TextOptionStore {
     textToSend: number,
     lastContactedDate: number,
     amountSent: number,
-    sentTexts: string[]
+    sentTexts: string[],
+    sendAs: string,
     setMessage: (newMessage: string) => void,
     setBucket: (newBucket: string) => void,
     setSortBy: (newSortBy: string) => void,
@@ -16,7 +17,8 @@ interface TextOptionStore {
     setLastContactedDate: (to: number) => void,
     setAmountSent: (to: number) => void,
     addSentText: (name: string) => void,
-    resetSentTexts: () => void
+    resetSentTexts: () => void,
+    setSendAs: (name: string) => void
 }
 
 export const useTextOptionStore = create<TextOptionStore>()(
@@ -29,14 +31,16 @@ export const useTextOptionStore = create<TextOptionStore>()(
             lastContactedDate: 1,
             amountSent: 0,
             sentTexts: [],
-            setMessage: (newMessage) => set(() => ({ message: newMessage})),
+            sendAs: '',
+            setMessage: (newMessage) => set((state) => ({ message: `Hey this is ${state.sendAs} with the Edge! ${newMessage}`})),
             setBucket: (newBucket) => set(() => ({ bucket: newBucket})),
             setSortBy: (newSortBy) => set(() => ({ sortBy: newSortBy})),
             setTextToSend: (to) => set(() => ({ textToSend: to})),
             setLastContactedDate: (to) => set(() => ({ lastContactedDate: to})),
             setAmountSent: (to) => set(() => ({ amountSent: to})),
             addSentText: (name) => set((state) => ({ sentTexts: [...state.sentTexts, name] })),
-            resetSentTexts: () => set(() => ({ sentTexts: [] }))
+            resetSentTexts: () => set(() => ({ sentTexts: [] })),
+            setSendAs: (name) => set(() => ({ sendAs: name }))
         }), {
             name: 'TextOptionStore',
             partialize: (state) => ({

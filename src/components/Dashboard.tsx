@@ -6,13 +6,12 @@ import Loading from '@/components/Loading'
 import TextOptions from '@/components/TextOptions'
 import { useTextOptionStore } from '@/data/TextOptionStore'
 
-
 export default function Dashboard() {
 
     const router = useRouter()
     const session = useSession()
 
-    const { sentTexts } = useTextOptionStore()
+    const { message, setMessage, sentTexts } = useTextOptionStore()
 
     useEffect(() => {
         if(session.status === 'unauthenticated') router.push('/')
@@ -23,8 +22,8 @@ export default function Dashboard() {
     return (
         <div className='h-full lg:h-screen flex flex-col bg-base-200'>
             <div className='flex flex-col lg:h-full lg:grid lg:grid-cols-3 lg:grid-rows-3 p-6 gap-6'>
-                <div className='flex h-full w-full lg:col-span-2 shadow-lg'>
-                    <textarea className='h-full w-full textarea textarea-lg textarea-bordered' maxLength={250} placeholder='Enter message here.' style={{ "resize": "none" }} />
+                <div className='flex h-60 lg:h-full w-full lg:col-span-2 shadow-lg'>
+                    <textarea value={message} onChange={(e) => setMessage(e.target.value)} className='h-full w-full textarea textarea-lg text-lg md:text-xl xl:text-3xl textarea-bordered' maxLength={250} placeholder='Enter message here.' style={{ "resize": "none" }} />
                 </div>
                 <div className='flex flex-col gap-2 h-full w-full lg:row-span-3 bg-base-100 rounded-lg shadow-xl p-4'>
                     <div className='flex w-full justify-between items-center px-2'>

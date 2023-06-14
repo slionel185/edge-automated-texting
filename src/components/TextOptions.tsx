@@ -5,7 +5,7 @@ import { useTextOptionStore } from '@/data/TextOptionStore'
 
 export default function TextOptions() {
 
-    const { bucket, setBucket, sortBy, setSortBy, textToSend, setTextToSend, lastContactedDate, setLastContactedDate, amountSent, sentTexts } = useTextOptionStore()
+    const { bucket, setBucket, sortBy, setSortBy, textToSend, setTextToSend, lastContactedDate, setLastContactedDate, amountSent, sendAs, setSendAs } = useTextOptionStore()
 
     const [sending, setSending] = useState(false)
 
@@ -14,7 +14,14 @@ export default function TextOptions() {
     }
 
     return (
-        <div className='flex flex-col h-full justify-center items-center gap-4'>
+        <div className='flex flex-col h-full justify-center items-center gap-2'>
+            <div className='form-control w-full'>
+                <label className='label text-primary'>
+                    <span className='label-text text-primary'>Send as:</span>
+                </label>
+                <input className='input input-bordered' type='text' name='name' value={sendAs} onChange={(e) => setSendAs(e.target.value)} placeholder='First Name' />
+            </div>
+
             <div className='form-control w-full'>
                 <label className='label text-primary'>
                     <span className='label-text text-primary'>Bucket</span>
@@ -81,12 +88,11 @@ export default function TextOptions() {
 
             <div className='w-full flex flex-col gap-2'>
                 <div className='w-full flex justify-center gap-2 items-center'>
+                    <button onClick={presets.webLead} className='btn btn-sm xl:btn-md'>Web Lead</button>
                     <button onClick={presets.rfc} className='btn btn-sm xl:btn-md'>RFC</button>
                     <button onClick={presets.missedGuest} className='btn btn-sm xl:btn-md'>Missed Guest</button>
-                    <button onClick={presets.guestOfTotal} className='btn btn-sm xl:btn-md'>Guest of Total</button>
                 </div>
                 <div className='w-full flex justify-center gap-2 items-center'>
-                    <button onClick={presets.webLead} className='btn btn-sm xl:btn-md'>Web Lead</button>
                     <button onClick={presets.apptNoShow} className='btn btn-sm xl:btn-md'>Appt No Show</button>
                     <button onClick={presets.paidPass} className='btn btn-sm xl:btn-md'>Paid Pass</button>
                 </div>
